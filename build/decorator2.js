@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 class Boat {
     constructor() {
         this.color = 'blue';
@@ -15,26 +18,48 @@ class Boat {
     get formattedColor() {
         return this.color;
     }
-    captain() {
-        throw new Error();
-        console.log('swish');
+    captain(speed) {
+        if (speed === 'fast') {
+            console.log('swish');
+        }
+        else {
+            throw new Error();
+        }
     }
 }
 __decorate([
-    logError,
+    testDecorator,
+    __metadata("design:type", String)
+], Boat.prototype, "color", void 0);
+__decorate([
+    testDecorator,
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [])
+], Boat.prototype, "formattedColor", null);
+__decorate([
+    logError('Oops the boat was sunk of the ocean') // using factories
+    ,
+    __param(0, params),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], Boat.prototype, "captain", null);
-function logError(target, key, desc) {
-    const method = desc.value;
-    desc.value = function () {
-        try {
-            method();
-        }
-        catch (err) {
-            console.log('Oops the boat sunk');
-        }
+function testDecorator(target, key) {
+    console.log('Key:', key);
+}
+function logError(errorMessage) {
+    return function (target, key, desc) {
+        const method = desc.value;
+        desc.value = function () {
+            try {
+                method();
+            }
+            catch (err) {
+                console.log(errorMessage);
+            }
+        };
     };
 }
-new Boat().captain();
+function params(target, key, index) {
+    console.log(key, index);
+}
