@@ -4,8 +4,8 @@ export const plane = {
     color: 'white',
 };
 
-Reflect.defineMetadata('note', 'helloworld', plane);
-Reflect.defineMetadata('width', 100, plane);
+Reflect.defineMetadata('note', 'not being racist tho', plane, 'color');
 
-const note = Reflect.getMetadata('note', plane);
-const width = Reflect.getMetadata('width', plane);
+const colorNote = Reflect.getMetadata('note', plane, 'color');
+
+console.log(colorNote);
