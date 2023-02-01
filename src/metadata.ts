@@ -1,11 +1,26 @@
 import 'reflect-metadata';
 
-export const plane = {
-    color: 'white',
-};
+@printMetadata
+class Plane {
+    color: string = 'white';
 
-Reflect.defineMetadata('note', 'not being racist tho', plane, 'color');
+    @markFunction('234sd234FFFFXXXX233')
+    fly(): void {
+        console.log('vrrrrrrrrrrrrrrrrrrrrrroooooooooooommmmmmmmm');
+    }
+}
 
-const colorNote = Reflect.getMetadata('note', plane, 'color');
+function markFunction(secretInfo: string) {
+    return function (target: any, key: string, desc: PropertyDescriptor) {
+        Reflect.defineMetadata('secret', secretInfo, target, key);
+    };
+}
 
-console.log(colorNote);
+function printMetadata(target: typeof Plane) {
+    console.log(Object.keys(target.prototype));
+    for (let key in Object.keys(target)) {
+        console.log(key);
+    }
+}
+
+// const secret = Reflect.getMetadata('secret', Plane.prototype, 'fly');
