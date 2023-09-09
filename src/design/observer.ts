@@ -1,11 +1,11 @@
 interface Subject {
-    registerObserver: (o: Observer) => void;
-    removeObserver: (o: Observer) => void;
-    notifyObservers: () => void;
+    registerObserver(o: Observer): void;
+    removeObserver(o: Observer): void;
+    notifyObservers(): void;
 }
 
 interface Observer {
-    update: (temperature: number) => void;
+    update(temperature: number): void;
 }
 class WeatherStation implements Subject {
     private temperature: number = 0;
@@ -48,7 +48,6 @@ class Fan implements Observer {
     private subject: Subject;
     constructor(weatherStation: Subject) {
         this.subject = weatherStation;
-        weatherStation.registerObserver(this);
     }
     public update(temperature: number) {
         if (temperature > 25) {
@@ -63,8 +62,10 @@ class Fan implements Observer {
 let weatherStation = new WeatherStation();
 
 let temDisplay = new TemperatureDiplay(weatherStation);
-
 let fan = new Fan(weatherStation);
+
+weatherStation.registerObserver(temDisplay);
+weatherStation.registerObserver(fan);
 
 weatherStation.setTemperature(20);
 weatherStation.setTemperature(30);
